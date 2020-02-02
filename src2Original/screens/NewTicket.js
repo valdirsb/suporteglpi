@@ -103,7 +103,7 @@ export default class NewTicket extends Component {
                 'searchText[level]': 2
             }
         });
-        const categorys = response.data;
+        const categorys = response.data.sort(this.ordenar);
         this.setState({ categorys });
     };
     
@@ -171,7 +171,7 @@ export default class NewTicket extends Component {
         let usersAItems = this.state.usersA.map((v, k) => {
             return <Picker.Item key={k} value={v.id} label={v.name} />
         });
-        let categorysItems = this.state.categorys.sort(this.ordenar).map((v, k) => {
+        let categorysItems = this.state.categorys.map((v, k) => {
             return <Picker.Item key={k} value={v.id} label={v.completename} />
         });
         let servicosItems = this.state.servicos.map((v, k) => {
