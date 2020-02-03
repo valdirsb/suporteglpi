@@ -63,7 +63,7 @@ export default class NewTicket extends Component {
                 range: "0-300"
             }
         });
-        const entitys = response.data;
+        const entitys = response.data.sort(this.ordenar);
         this.setState({ entitys });
     };
 
@@ -85,7 +85,7 @@ export default class NewTicket extends Component {
                 range: "0-300"
             }
         });
-        const users = response.data;
+        const users = response.data.sort(this.ordenar);
         this.setState({ usersR: users });
         this.setState({ usersA: users });
 
@@ -96,6 +96,7 @@ export default class NewTicket extends Component {
             if (v.name===this.state.user){this.setState({userA: v.id})}
         });
     };
+
     loadCategorys = async () => {
         const response = await api.get('/ITILCategory',{
             params: {
@@ -103,7 +104,7 @@ export default class NewTicket extends Component {
                 'searchText[level]': 2
             }
         });
-        const categorys = response.data.sort(this.ordenar);
+        const categorys = response.data.sort(this.ordenarCategoria);
         this.setState({ categorys });
     };
     
@@ -140,16 +141,13 @@ export default class NewTicket extends Component {
         }
     };
 
+    ordenarCategoria(a, b) {
+        return a.completename < b.completename ? -1 :a.completename > b.completename ? 1 : 0;
+    };
+
     ordenar(a, b) {
-        if (a.completename > b.completename) {
-          return 1;
-        }
-        if (a.completename < b.completename) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      }
+        return a.name < b.name ? -1 :a.name > b.name ? 1 : 0;
+    };
 
     render() {
 
