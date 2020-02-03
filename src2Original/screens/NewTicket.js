@@ -57,7 +57,7 @@ export default class NewTicket extends Component {
                 range: "0-300"
             }
         });
-        const entitys = response.data.sort(this.ordenar);
+        const entitys = response.data.sort(this.ordenarCategoria);
         this.setState({ entitys });
     };
 
@@ -154,7 +154,7 @@ export default class NewTicket extends Component {
     } else {
         
         const pickerEntity = this.state.entitys.map((v,k) => {
-            return {key: k, label: v.name, value: v.id }
+            return {key: k, label: v.name, value: v.id, section: (v.level===1)?true:false}
         });
 
         const pickerusersR = this.state.usersR.map((v,k) => {

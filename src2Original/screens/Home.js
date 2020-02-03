@@ -55,7 +55,7 @@ export default class Home extends Component {
 
         try {
             const response = await api.get('/Ticket/',{
-                params: {
+                params: { 
                     expand_dropdowns: "true",
                     order: "DESC",
                     range: "0-100"

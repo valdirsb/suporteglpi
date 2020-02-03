@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import api from '../services/api';
-import { StyleSheet, StatusBar, Switch } from 'react-native';
+import { StyleSheet, StatusBar, Switch, View } from 'react-native';
+import ModalSelector from 'react-native-modal-selector';
 
 import {
   Content,
@@ -40,16 +41,26 @@ export default class Sidebar extends Component {
   }
 
   loadEntitys = async () => {
-      const response = await api.get('/Entity');
-      const entitys = response.data;
+      const response = await api.get('/Entity',{
+        params: {
+            range: "0-300"
+        }
+      });
+      const entitys = response.data.sort(this.ordenar);
       this.setState({ entitys });
+  };
+
+  ordenar(a, b) {
+    return a.completename < b.completename ? -1 :a.completename > b.completename ? 1 : 0;
   };
 
 
     render() {
 
-      let entitysItems = this.state.entitys.map((v, k) => {
-          return <Picker.Item key={k} value={v.completename} label={v.name} />
+      
+
+      const pickerEntity = this.state.entitys.map((v,k) => {
+          return {key: k, label: v.name, value: v.id, section: (v.level===1)?true:false }
       });
 
         return (
@@ -57,14 +68,20 @@ export default class Sidebar extends Component {
             <Content>
             
             <Text style={styles.drawerTittle}>Filtros:</Text>
-
-            <Form>
-            <Item picker>
-              <Picker selectedValue={this.state.entity} onValueChange={(itemValue, itemIndex) => this.setState({entity:itemValue})} >
-                  {entitysItems}
-              </Picker>
-            </Item>
-            </Form>
+            <Text style={styles.drawerTittle2}>Entidade:</Text>
+            <View>
+              <ModalSelector
+                  data={pickerEntity}
+                  initValue="ENTIDADE:   ▼"
+                  optionContainerStyle={{backgroundColor: '#fff'}}
+                  cancelContainerStyle={{backgroundColor: '#fff'}}
+                  sectionStyle={{backgroundColor: '#184782'}}
+                  sectionTextStyle={{color:'#fff'}}
+                  cancelText="Fechar"
+                  onChange={(option)=>{ this.setState({entity:option.value}) }} 
+              />
+            </View>
+            <Text style={styles.drawerTittle2}>Chamado:</Text>
             <ListItem>
               <Left>
                 <Text>Meus Chamados</Text>
@@ -146,7 +163,7 @@ const styles = StyleSheet.create({
   drawerTittle2: {
     padding: 10,
     color: "#FFF",
-    backgroundColor: "#E1E1E1",
+    backgroundColor: "#D1D1D1",
     textAlign: "center",
     fontWeight: "bold",
   },
