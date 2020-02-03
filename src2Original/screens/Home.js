@@ -55,7 +55,7 @@ export default class Home extends Component {
 
         try {
             const response = await api.get('/Ticket/',{
-                params: { 
+                params: {
                     expand_dropdowns: "true",
                     order: "DESC",
                     range: "0-100"
@@ -96,7 +96,7 @@ export default class Home extends Component {
                                 switch (item.type) {
                                 case 1:   return <Contrast icon='!' color='#E69B6A'>INCIDENTE</Contrast>;
                                 case 2: return <Contrast icon='?' color='#179FD0'>PEDIDO</Contrast>;
-                                default:      return "Nenhum";
+                                default:      return <Text>Nenhum</Text>;
                                 }
                     })()}
 

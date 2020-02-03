@@ -57,7 +57,7 @@ export default class NewTicket extends Component {
                 range: "0-300"
             }
         });
-        const entitys = response.data.sort(this.ordenarCategoria);
+        const entitys = response.data.sort(this.ordenarNomeCompleto);
         this.setState({ entitys });
     };
 
@@ -97,7 +97,7 @@ export default class NewTicket extends Component {
                 range: "0-300"
             }
         });
-        const categorys = response.data.sort(this.ordenarCategoria);
+        const categorys = response.data.sort(this.ordenarNomeCompleto);
         this.setState({ categorys });
     };
     
@@ -134,7 +134,7 @@ export default class NewTicket extends Component {
         }
     };
 
-    ordenarCategoria(a, b) {
+    ordenarNomeCompleto(a, b) {
         return a.completename < b.completename ? -1 :a.completename > b.completename ? 1 : 0;
     };
 
