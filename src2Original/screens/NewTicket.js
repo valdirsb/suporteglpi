@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import api from '../services/api';
 import { StyleSheet, View, TextInput } from 'react-native';
+import ModalSelector from 'react-native-modal-selector';
 import {    Container, 
             Header, 
             Left, 
@@ -9,16 +10,10 @@ import {    Container,
             Content, 
             Icon,
             Spinner,
-            Form, 
-            Picker, 
-            Item, 
             Footer, 
             FooterTab, 
             Button, 
             Text, 
-            Label,
-            Input,
-            Textarea,
         } from 'native-base';
 
 export default class NewTicket extends Component {
@@ -36,14 +31,13 @@ export default class NewTicket extends Component {
             categorys:[],
             titulo:"",
             descricao:"",
-
             user:"",
             profileType:0,
 
             servico:2,
             servicos: [
-                {nome: 'Pedido', id: 2},
-                {nome: 'Incidente', id: 1},
+                {name: 'Pedido', id: 2},
+                {name: 'Incidente', id: 1},
             ]
         };
 
@@ -100,8 +94,7 @@ export default class NewTicket extends Component {
     loadCategorys = async () => {
         const response = await api.get('/ITILCategory',{
             params: {
-                range: "0-300",
-                'searchText[level]': 2
+                range: "0-300"
             }
         });
         const categorys = response.data.sort(this.ordenarCategoria);
@@ -159,22 +152,27 @@ export default class NewTicket extends Component {
             </View>
         );
     } else {
+        
+        const pickerEntity = this.state.entitys.map((v,k) => {
+            return {key: k, label: v.name, value: v.id }
+        });
 
-        let entitysItems = this.state.entitys.map((v, k) => {
-            return <Picker.Item key={k} value={v.id} label={v.name} />
+        const pickerusersR = this.state.usersR.map((v,k) => {
+            return {key: k, label: v.firstname+' '+v.realname, value: v.id }
         });
-        let usersRItems = this.state.usersR.map((v, k) => {
-            return <Picker.Item key={k} value={v.id} label={v.name} />
+
+        const pickerusersA = this.state.usersA.map((v,k) => {
+            return {key: k, label: v.firstname+' '+v.realname, value: v.id }
         });
-        let usersAItems = this.state.usersA.map((v, k) => {
-            return <Picker.Item key={k} value={v.id} label={v.name} />
+
+        const pickerServico = this.state.servicos.map((v,k) => {
+            return {key: k, label: v.name, value: v.id }
         });
-        let categorysItems = this.state.categorys.map((v, k) => {
-            return <Picker.Item key={k} value={v.id} label={v.completename} />
+
+        const pickerCategory = this.state.categorys.map((v,k) => {
+            return {key: k, label: v.name, value: v.id, section: (v.level===1)?true:false }
         });
-        let servicosItems = this.state.servicos.map((v, k) => {
-            return <Picker.Item key={k} value={v.id} label={v.nome} />
-        });
+
         return (
             <Container>
                 <Header  style={styles.header}>
@@ -201,27 +199,48 @@ export default class NewTicket extends Component {
                                             <Text style={styles.text}>Entidade: </Text>
                                         </View>
                                         <View style={styles.backEnt}>
-                                            <Picker selectedValue={this.state.entity} onValueChange={(itemValue, itemIndex) => this.setState({entity:itemValue})} >
-                                                {entitysItems}
-                                            </Picker>
+                                            <ModalSelector
+                                                data={pickerEntity}
+                                                initValue="Selecionar  ▼"
+                                                optionContainerStyle={{backgroundColor: '#fff'}}
+                                                cancelContainerStyle={{backgroundColor: '#fff'}}
+                                                sectionStyle={{backgroundColor: '#184782'}}
+                                                sectionTextStyle={{color:'#fff'}}
+                                                cancelText="Fechar"
+                                                onChange={(option)=>{ this.setState({entity:option.value}) }} 
+                                            />
                                         </View>
                                     </View>
                                     <View style={styles.row}>
                                         <View>
                                             <Text style={styles.text2}>Requerente:</Text>
                                             <View style={styles.back}>
-                                                <Picker  selectedValue={this.state.userR} onValueChange={(itemValue, itemIndex) => this.setState({userR:itemValue})} >
-                                                    {usersRItems}
-                                                </Picker>
+                                                <ModalSelector
+                                                    data={pickerusersR}
+                                                    initValue="Selecionar  ▼"
+                                                    optionContainerStyle={{backgroundColor: '#fff'}}
+                                                    cancelContainerStyle={{backgroundColor: '#fff'}}
+                                                    sectionStyle={{backgroundColor: '#184782'}}
+                                                    sectionTextStyle={{color:'#fff'}}
+                                                    cancelText="Fechar"
+                                                    onChange={(option)=>{ this.setState({userR:option.value}) }} 
+                                                />
                                             </View>
                                             
                                         </View>
                                         <View>
                                             <Text style={styles.text2}>Atribuído:</Text>
                                             <View style={styles.back}>
-                                                <Picker  selectedValue={this.state.userA} onValueChange={(itemValue, itemIndex) => this.setState({userA:itemValue})} >
-                                                    {usersAItems}
-                                                </Picker>
+                                                <ModalSelector
+                                                    data={pickerusersA}
+                                                    initValue="Selecionar  ▼"
+                                                    optionContainerStyle={{backgroundColor: '#fff'}}
+                                                    cancelContainerStyle={{backgroundColor: '#fff'}}
+                                                    sectionStyle={{backgroundColor: '#184782'}}
+                                                    sectionTextStyle={{color:'#fff'}}
+                                                    cancelText="Fechar"
+                                                    onChange={(option)=>{ this.setState({userA:option.value}) }} 
+                                                />
                                             </View>
                                             
                                         </View>
@@ -235,18 +254,32 @@ export default class NewTicket extends Component {
                             <View>
                                 <Text style={styles.text2}>Tipo:</Text>
                                 <View style={styles.back}>
-                                    <Picker selectedValue={this.state.servico} onValueChange={(itemValue, itemIndex) => this.setState({servico:itemValue})} >
-                                        {servicosItems}
-                                    </Picker>
+                                    <ModalSelector
+                                        data={pickerServico}
+                                        initValue="Pedido "
+                                        optionContainerStyle={{backgroundColor: '#fff'}}
+                                        cancelContainerStyle={{backgroundColor: '#fff'}}
+                                        sectionStyle={{backgroundColor: '#184782'}}
+                                        sectionTextStyle={{color:'#fff'}}
+                                        cancelText="Fechar"
+                                        onChange={(option)=>{ this.setState({servico:option.value}) }} 
+                                    />
                                 </View>
                                 
                             </View>
                             <View>
                                 <Text style={styles.text2}>Categoria:</Text>
                                 <View style={styles.back}>
-                                    <Picker selectedValue={this.state.category} onValueChange={(itemValue, itemIndex) => this.setState({category:itemValue})} >
-                                        {categorysItems}
-                                    </Picker>
+                                    <ModalSelector
+                                        data={pickerCategory}
+                                        initValue="Selecionar  ▼"
+                                        optionContainerStyle={{backgroundColor: '#fff'}}
+                                        cancelContainerStyle={{backgroundColor: '#fff'}}
+                                        sectionStyle={{backgroundColor: '#184782'}}
+                                        sectionTextStyle={{color:'#fff'}}
+                                        cancelText="Fechar"
+                                        onChange={(option)=>{ this.setState({category:option.value}) }} 
+                                    />
                                 </View>
                                 
                             </View>
@@ -323,10 +356,12 @@ const styles = StyleSheet.create({
     },
     text:{
         fontSize: 20,
+        color: "#888",
 
     },
     text2:{
         fontSize: 16,
+        color: "#888",
 
     },
     input: {
@@ -335,16 +370,10 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     back: {
-        width: 160,
-        height: 45,
-        backgroundColor: "#EEEEEE",
-        borderRadius: 5,
+        width: 160
     },
     backEnt:{
-        width: 230,
-        height: 45,
-        backgroundColor: "#EEEEEE",
-        borderRadius: 5,
+        width: 230
     },
     backText: {
         height: 50,
