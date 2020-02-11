@@ -1,18 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Item, Input, Label, Spinner } from 'native-base';
 import base64 from 'react-native-base64';
 import api from '../services/api';
 
-
 export default (props) => {
 
     const [ nome, setNome ] = useState('');
     const [ senha, setSenha ] = useState('');
-    const [ tokenprovisorio, setTokenprovisorio ] = useState('');
-    const [ loading, setLoading ] = useState(false);
+    const [ loading, setLoading ] = useState(true);
     AsyncStorage.setItem("@token", "");
+
+    useEffect(()=>{
+        loadToken();
+    },[]);
+    
+
+    loadToken = async () => {
+        const token = await AsyncStorage.getItem("@token");
+    
+        if (token) {
+            props.navigation.navigate('HomeTab');
+        } else {
+            setLoading(false);
+        }
+    }
 
     login = async () => {
         
@@ -21,7 +34,6 @@ export default (props) => {
         } else {
             setLoading(true);
             const authorization = "Basic "+base64.encode(nome+":"+senha);
-            setTokenprovisorio(authorization);
             
             try {
                 const response = await api.get('/initSession',{
@@ -47,43 +59,52 @@ export default (props) => {
         props.navigation.navigate(r);
     }
 
-    return(
-
-        <View style={styles.container}>
-            <View style={styles.tituloImage}>
-                <Image source={require('../assets/logo-grupo-fst.png')} />
+    if(loading){
+        return (
+            <View style={styles.loadView}>
+                <Spinner color='blue' />
+                <Text>Carregando...</Text>
             </View>
+            );
+    } else {
+        return(
 
-            <View style={styles.loginContainer}>
+            <View style={styles.container}>
+                <View style={styles.tituloImage}>
+                    <Image source={require('../assets/logo-grupo-fst.png')} />
+                </View>
+
+                <View style={styles.loginContainer}>
                 
-                    <Item floatingLabel>
-                        <Label>Usuario</Label>
-                        <Input autoCapitalize='none' onChangeText={n=>setNome(n)} value={nome} />
-                    </Item>
-                    <Item style={{marginTop:10}} floatingLabel>
-                        <Label>Senha</Label>
-                        <Input autoCapitalize='none' secureTextEntry={true} onChangeText={s=>setSenha(s)} value={senha} />
-                    </Item>
-                    <Text>{tokenprovisorio}</Text>
-                    <Text>a</Text>
+                        <Item floatingLabel>
+                            <Label>Usuario</Label>
+                            <Input autoCapitalize='none' onChangeText={n=>setNome(n)} value={nome} />
+                        </Item>
+                        <Item style={{marginTop:10}} floatingLabel>
+                            <Label>Senha</Label>
+                            <Input autoCapitalize='none' secureTextEntry={true} onChangeText={s=>setSenha(s)} value={senha} />
+                        </Item>
 
-                <TouchableOpacity style={styles.loginButton} onPress={login}>
-                    <Text style={styles.loginButtonText}>Acessar</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.loginButton} onPress={login}>
+                        <Text style={styles.loginButtonText}>Acessar</Text>
+                    </TouchableOpacity>
     
-            </View>
+                </View>
 
-        </View>
-   
-    )
+            </View>
+    
+        );
+    }
+
+    
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingBottom:70,
         backgroundColor: "#fafafa",
         justifyContent: "center",
+        alignItems: "center",
     },
     loadView: {
         flex: 1,
@@ -101,7 +122,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     tituloImage: {
-        marginBottom: 30,
+        marginBottom: 20,
         textAlign: "center",
         justifyContent: "center",
         alignItems: "center",
