@@ -20,9 +20,9 @@ const HomeTab = createBottomTabNavigator({
         <CustomTabBar 
             {...props}
             items={[
-                {text:'Chamados', route:'Tab1Stack', icon:'md-apps'},
-                {text:'Info', route:'Tab2Stack', icon:'md-camera'},
-                {text:'Abrir Chamado', route:'Tab3Stack', icon:'md-navigate'}
+                {text:'Info', route:'Tab2Stack', icon:'info'},
+                {text:'Chamados', route:'Tab1Stack', icon:'list'},
+                {text:'Abrir Chamado', route:'Tab3Stack', icon:'file-plus'}
             ]}
         
         />

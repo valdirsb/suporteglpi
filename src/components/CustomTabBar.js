@@ -7,9 +7,11 @@ export default (props)=>{
         return (
             <Button vertical
                 key={index}
+                
+                style={{backgroundColor:"#191CBC"}}
                 onPress={()=>props.navigation.navigate(item.route)}
                 >
-                <Icon type="Ionicons" name={item.icon} />
+                <Icon type="Feather" name={item.icon} />
                 <Text>{item.text}</Text>
             </Button>
             

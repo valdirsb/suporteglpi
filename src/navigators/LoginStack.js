@@ -9,6 +9,14 @@ const MainNavigator = createStackNavigator({
     LoginConfig:{
         screen:LoginConfig
     }
+},{
+    defaultNavigationOptions:{
+        headerStyle:{
+            backgroundColor:'#191CBC'
+        },
+        headerTintColor: '#fff',
+        headerTitleAlign:'center'
+    }
 });
 
 export default MainNavigator;
