@@ -1,6 +1,7 @@
 import React from 'react';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import Home from '../screes/Home';
+import SideBar from '../components/Sidebar';
 import { View, Text } from 'react-native';
 import { Body, Header, Title, Left, Button, Icon, Right } from 'native-base';
 
@@ -9,11 +10,10 @@ const Drawer = createDrawerNavigator({
         screen:Home
     }
 }, {
-    defaultNavigationOptions:{
-        title:"Pagina Drawer"
-        
-    }
-});
+    initialRouteName: "Home",
+    drawerPosition: "right",
+    contentComponent: props => <SideBar {...props} />
+  });
 
 Drawer.navigationOptions = ({navigation}) => {
     return{

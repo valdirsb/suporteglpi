@@ -2,24 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {View, FlatList, TouchableOpacity, StyleSheet, StatusBar} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
-import { Contrast , TextRed} from '../components/Componentes';
+import { Contrast } from '../components/Componentes';
 import api from '../services/api';
 import {
     Container,
-    Header,
-    Title,
     Spinner,
-    Content,
-    Button,
-    Icon,
-    Left,
-    Right,
-    Body,
     Text,
-    ListItem,
-    List,
-    Footer,
-    FooterTab,
   } from "native-base";
 
 const Home = (props) => {
@@ -49,7 +37,7 @@ const Home = (props) => {
                 params: {
                     expand_dropdowns: "true",
                     order: "DESC",
-                    range: "0-3"
+                    range: "0-100"
                 }
             });
             const tickets = response.data;

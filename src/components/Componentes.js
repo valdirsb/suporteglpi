@@ -7,9 +7,9 @@ export class Contrast extends Component {
             <View style={{
                 flexDirection: 'row',
                 paddingVertical: 3,
-                paddingHorizontal: 10,
+                paddingHorizontal: 5,
                 backgroundColor: this.props.color,
-                borderRadius: 5,
+                borderRadius: 20,
                 borderColor: "#184782",
                 marginTop: 10,
                 alignItems: 'center',
@@ -24,7 +24,7 @@ export class Contrast extends Component {
                     fontWeight: 'bold',
                 }}>{this.props.icon}</Text>
                 <Text style={{
-                    marginLeft: 6,
+                    marginLeft: 3,
                     fontSize: this.props.fontSize,
                     fontWeight: 'bold',
                     color: "#fff",

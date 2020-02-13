@@ -2,7 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const api = axios.create({
-    baseURL: 'http://grupofst.com.br/hb7ti/apirest.php'
+    baseURL: 'http://grupofst.com.br/suporte/apirest.php'
 })
 
 api.interceptors.request.use(async (config) => {
