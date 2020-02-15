@@ -26,4 +26,19 @@ const Tab1Stack = createStackNavigator({
     }
 });
 
+Tab1Stack.navigationOptions = ({ navigation }) => {
+
+    let tabBarVisible = true;
+
+    let routeName = navigation.state.routes[navigation.state.index].routeName
+
+    if ( routeName == 'TicketProcess' ) {
+        tabBarVisible = false
+    }
+
+    return {
+        tabBarVisible,
+    }
+}
+
 export default Tab1Stack;

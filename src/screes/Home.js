@@ -40,8 +40,8 @@ const Home = (props) => {
                     range: "0-100"
                 }
             });
-            const tickets = response.data;
-            setTickets(tickets);
+            const ltickets = response.data;
+            setTickets(ltickets);
             setLoading(false);
             
             } catch (err) {
