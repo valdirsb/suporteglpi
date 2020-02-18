@@ -15,6 +15,7 @@ import {
 
 const Ticket = (props) => {
     const [ ticket, setTicket ] = useState([]);
+    const [ ticketUser, setTicketUser ] = useState([]);
     const [ loading, setLoading ] = useState(true);
 
     useEffect(()=>{
@@ -23,7 +24,6 @@ const Ticket = (props) => {
 
     loadTicket = async () => {
         const id = props.navigation.getParam('id');
-
         const response = await api.get(`/Ticket/${id}`,{
             params: {
                 expand_dropdowns: "true"
@@ -31,7 +31,27 @@ const Ticket = (props) => {
         });
         const ticket = response.data;
         setTicket(ticket);
+
+        const response2 = await api.get(`/Ticket/${id}/Ticket_user`,{
+            params: {
+                expand_dropdowns: "true"
+            }
+        });
+        const ticketUser = response2.data;
+        setTicketUser(ticketUser);
+        
         setLoading(false);
+    };
+
+    loadTicketUser = async () => {
+        const id = props.navigation.getParam('id');
+
+        const response = await api.get(`/Ticket/${id}/Ticket_user`,{
+            params: {
+                expand_dropdowns: "true"
+            }
+        });
+        const ticketUser = response.data;
     };
 
     if (ticket.type===1) {
@@ -50,6 +70,12 @@ const Ticket = (props) => {
             </View>
         );
     } else {
+        const ticketUserSolicitante = ticketUser.filter((item)=>{return item.type===1}).map((v,k) => {
+            return  <Text key={k} style={styles.text}> <Icon name="user" type="FontAwesome" style={{fontSize: 18}} /> {v.users_id} </Text>
+        });
+        const ticketUserAtribuido = ticketUser.filter((item)=>{return item.type===2}).map((v,k) => {
+            return  <Text key={k} style={styles.text}> <Icon name="user" type="FontAwesome" style={{fontSize: 18}} /> {v.users_id} </Text>
+        });
           return(
             <Container>
                 <Content style={styles.container}>
@@ -74,14 +100,14 @@ const Ticket = (props) => {
                         <View style={styles.card}>
                             <View style={styles.cardRow}>
                                 <Text style={styles.h2}>Solicitante: 
-                                    <Text style={styles.text}> <Icon name="user" type="FontAwesome" style={{fontSize: 18}} /> {ticket.users_id_recipient} </Text>
+                                    {ticketUserSolicitante}
                                 </Text>
                             </View>
                         </View>
                         <View style={styles.card}>
                             <View style={styles.cardRow}>
                                 <Text style={styles.h2}>Atribuido para: 
-                                    <Text style={styles.text}> <Icon name="user" type="FontAwesome" style={{fontSize: 18}} /> {ticket.users_id_lastupdater} </Text>
+                                    {ticketUserAtribuido}
                                 </Text>
                             </View>
                         </View>

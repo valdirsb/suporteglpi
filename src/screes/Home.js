@@ -12,38 +12,67 @@ import {
 
 const Home = (props) => {
     const [ entitys, setEntitys ] = useState([]);
+    const [ user, setUser ] = useState(null);
+    const [ profileType, setProfileType ] = useState(0);
     const [ tickets, setTickets ] = useState([]);
+    const [ filterParams, setFilterParams ] = useState({sort: 2, order: "DESC", range: "0-100"});
     const [ loading, setLoading ] = useState(true);
-    const [ filterNovo, setFilterNovo ] = useState(false);
-    const [ filterProcess, setFilterProcess ] = useState(true);
-    const [ filterPendente, setFilterPendente ] = useState(true);
-    const [ filterResolvido, setFilterResolvido ] = useState(true);
-    const [ filterFechado, setFilterFechado ] = useState(true);
-    const [ filterString, setFilterString ] = useState("tipo.type===1");
 
     useEffect(()=>{
         loadTickets();
-    },[]);
+        loadFullSession();
+    },[filterParams]);
 
     loadRefresh = async () => {
         setLoading(true);
         loadTickets();
     }
 
-    loadTickets = async () => {
+    loadFilter = (p) => {
+        switch (p) {
+            case 0: 
+                setFilterParams({ sort: 2, order: "DESC", range: "0-100",
+                                'is_deleted': 0,
+                                'criteria[0][field]': 4,
+                                'criteria[0][searchtype]': "equals",
+                                'criteria[0][value]':user
+                                })
+                break;
+            case 1: 
+                setFilterParams({ sort: 2, order: "DESC", range: "0-100",
+                                'is_deleted': 0,
+                                'criteria[0][field]': 5,
+                                'criteria[0][searchtype]': "equals",
+                                'criteria[0][value]':user
+                                })
+                break;
+            case 2: 
+                setFilterParams({ sort: 2, order: "DESC", range: "0-100",
+                                'is_deleted': 0
+                                })
+                break;
+            default: 
+                alert("Caso nenhum");
+            }
+    }
 
+    loadFullSession = async () => {
+        const response = await api.get('/getFullSession');
+        const user = response.data.session.glpiID;
+        const profileType = response.data.session.glpiactiveprofile.id;
+        setUser(user);
+        setProfileType(profileType);
+    };
+
+    loadTickets = async () => {
+        setLoading(true);
         try {
-            const response = await api.get('/Ticket/',{
-                params: {
-                    expand_dropdowns: "true",
-                    order: "DESC",
-                    range: "0-100"
-                }
+            const response = await api.get('search/Ticket/',{
+                params: filterParams
             });
             const ltickets = response.data;
             setTickets(ltickets);
             setLoading(false);
-            
             } catch (err) {
                 AsyncStorage.setItem("@token", '');
                 props.navigation.navigate('LoginStack');
@@ -52,24 +81,24 @@ const Home = (props) => {
 
     renderItem = ({ item }) => (
         <View style={styles.productContainer}>
-            <TouchableOpacity style={styles.productButton} onPress={() => {props.navigation.navigate('Ticket', {id: item.id})}}>
+            <TouchableOpacity style={styles.productButton} onPress={() => {props.navigation.navigate('Ticket', {id: item[2]})}}>
                 <View style={styles.ticketHeader}>
                     <View style={styles.ticketLeft}>
-                        <Text style={styles.ticketHeaderText}>{item.entities_id}</Text>
+                        <Text style={styles.ticketHeaderText}>{item[80]}</Text>
                     </View>
                     <View style={styles.ticketRight}>
                         <View style={styles.ticketDate}>
-                            <Text style={styles.ticketFootDateText}>{moment(item.date).format('DD/MM/YY - HH:mm:ss')}</Text>
+                            <Text style={styles.ticketFootDateText}>{moment(item[15]).format('DD/MM/YY - HH:mm:ss')}</Text>
                         </View>
                     </View>
                 </View>
                 <View style={styles.ticketBody}>
-                    <Text style={styles.ticketTitle}>{item.name}</Text>
+                    <Text style={styles.ticketTitle}>{item[1]}</Text>
                 </View>
                 <View style={styles.ticketFoot}>
                     
                     {(() => {
-                                switch (item.type) {
+                                switch (item[14]) {
                                 case 1:   return <Contrast icon='!' color='#E69B6A'>INCIDENTE</Contrast>;
                                 case 2: return <Contrast icon='?' color='#179FD0'>PEDIDO</Contrast>;
                                 default:      return <Text>Nenhum</Text>;
@@ -77,7 +106,7 @@ const Home = (props) => {
                     })()}
 
                     <View style={styles.ticketRight}>
-                        <Contrast icon='ID' fontSize={18} color='#999'>{item.id}</Contrast>
+                        <Contrast icon='ID' fontSize={18} color='#999'>{item[2]}</Contrast>
                     </View>
                     
                 </View>
@@ -109,15 +138,15 @@ const Home = (props) => {
                     <View style={styles.container}>
                         <FlatList
                             contentContainerStyle={styles.list}
-                            data={tickets.filter((item)=>{
-                                return  (((filterNovo)?item.status===1:"")||
-                                        ((filterProcess)?item.status===2:"")||
-                                        ((filterPendente)?item.status===4:"")||
-                                        ((filterResolvido)?item.status===5:"")||
-                                        ((filterFechado)?item.status===6:"")
+                            data={tickets.data.filter((item)=>{
+                                return  (((filterNovo)?item[12]===1:"")||
+                                        ((filterProcess)?item[12]===2:"")||
+                                        ((filterPendente)?item[12]===4:"")||
+                                        ((filterResolvido)?item[12]===5:"")||
+                                        ((filterFechado)?item[12]===6:"")
                                     )
                             })}
-                            keyExtractor={item => String(item.id) }
+                            keyExtractor={item => String(item[2]) }
                             renderItem={renderItem}
                         />
                     </View>

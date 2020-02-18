@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import api from '../services/api';
-import { StyleSheet, StatusBar, Switch, View } from 'react-native';
+import { StyleSheet, StatusBar, Switch, View, TouchableOpacity } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 
 import {
@@ -32,7 +32,9 @@ export default class Sidebar extends Component {
       process:true,
       pendente:true,
       resolvido:false,
-      fechado:false
+      fechado:false,
+      radioBtnsData: ['Meus Chamados', 'Chamados Atribuidos', 'Todos os Chamados'],
+      radioChecked: 2
     };
   }
 
@@ -80,30 +82,32 @@ export default class Sidebar extends Component {
               />
             </View>
             <Text style={styles.drawerTittle2}>Chamado:</Text>
-            <ListItem>
-              <Left>
-                <Text>Meus Chamados</Text>
-              </Left>
-              <Right>
-                <Radio selected={false} />
-              </Right>
-            </ListItem>
-            <ListItem>
-              <Left>
-                <Text>Chamados Atribuidos</Text>
-              </Left>
-              <Right>
-                <Radio selected={false} />
-              </Right>
-            </ListItem>
-            <ListItem>
-              <Left>
-                <Text>Todos os Chamados</Text>
-              </Left>
-              <Right>
-                <Radio selected={true} />
-              </Right>
-            </ListItem>
+            
+            {this.state.radioBtnsData.map((data, key) => {
+                return (
+                    <ListItem key={key}>
+                        {this.state.radioChecked == key ?
+                            <>
+                                  <Left>
+                                    <Text>{data}</Text>
+                                  </Left>
+                                  <Right>
+                                    <Radio selected={true} />
+                                  </Right>
+                            </>
+                            :
+                            <>
+                                <Left>
+                                  <Text>{data}</Text>
+                                </Left>
+                                <Right>
+                                  <Radio selected={false}  onPress={()=>{this.setState({radioChecked: key})}} />
+                                </Right>
+                            </>
+                        }
+                    </ListItem>
+                )
+            })}
 
             <Text style={styles.drawerTittle2}>Status:</Text>
 
@@ -138,7 +142,15 @@ export default class Sidebar extends Component {
               <Switch value={this.state.fechado} onValueChange={(v)=>this.setState({fechado:v})} />
             </ListItem>
 
-            <Button block style={styles.buttonFilter} onPress={() => {this.props.navigation.navigate('Home', {entidade: this.state.entity ,novo: this.state.novo, process:this.state.process, pendente:this.state.pendente, resolvido:this.state.resolvido, fechado:this.state.fechado}),this.props.navigation.closeDrawer()}}>
+            <Button block style={styles.buttonFilter} 
+                    onPress={() => {this.props.navigation.navigate('Home', {
+                                      entidade: this.state.entity,
+                                      novo: this.state.novo, 
+                                      process:this.state.process, 
+                                      pendente:this.state.pendente, 
+                                      resolvido:this.state.resolvido, 
+                                      fechado:this.state.fechado
+                                      }),loadFilter(this.state.radioChecked),this.props.navigation.closeDrawer()}}>
               <Text>Filtrar</Text>
             </Button>
 

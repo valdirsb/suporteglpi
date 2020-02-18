@@ -187,9 +187,7 @@ const TicketProcess =  (props) => {
                         renderItem={renderItem}
                     />
                 </Content>
-
-                
-                    <View style={{marginTop: 22}}>
+                    
                         <Modal
                         animationType="slide"
                         presentationStyle="overFullScreen"
@@ -261,11 +259,7 @@ const TicketProcess =  (props) => {
                                 </View>
                             </View>
                         </Modal>
-
-                        
-                    </View>
-                
-
+                    
                 <Footer>
                     <FooterTab>
                         <Button vertical onPress={() => {
