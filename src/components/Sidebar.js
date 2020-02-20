@@ -28,6 +28,7 @@ export default class Sidebar extends Component {
     this.state = {
       entity:0,
       entitys: [],
+      profileType:0,
       novo:true,
       process:true,
       pendente:true,
@@ -39,8 +40,15 @@ export default class Sidebar extends Component {
   }
 
   componentDidMount(){
+    this.loadFullSession();
     this.loadEntitys();
   }
+
+  loadFullSession = async () => {
+    const response = await api.get('/getFullSession');
+    const profileType = response.data.session.glpiactiveprofile.id;
+    this.setState({ profileType });
+};
 
   loadEntitys = async () => {
       const response = await api.get('/Entity',{
@@ -68,7 +76,10 @@ export default class Sidebar extends Component {
         return (
         <Container>
             <Content>
-            <Text style={styles.drawerTittle2}>Entidade:</Text>
+            {(() => {
+            if(this.state.profileType!=1){
+                return <View>
+      {/*   <Text style={styles.drawerTittle2}>Entidade:</Text>
             <View>
               <ModalSelector
                   data={pickerEntity}
@@ -81,6 +92,7 @@ export default class Sidebar extends Component {
                   onChange={(option)=>{ this.setState({entity:option.value}) }} 
               />
             </View>
+      */}
             <Text style={styles.drawerTittle2}>Chamado:</Text>
             
             {this.state.radioBtnsData.map((data, key) => {
@@ -108,6 +120,12 @@ export default class Sidebar extends Component {
                     </ListItem>
                 )
             })}
+          </View>
+
+            }
+            })()}
+          
+            
 
             <Text style={styles.drawerTittle2}>Status:</Text>
 
