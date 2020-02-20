@@ -13,6 +13,14 @@ const Tab2Stack = createStackNavigator({
     Outro:{
         screen:Outro
     },
+}, {
+    defaultNavigationOptions:{
+        headerStyle:{
+            backgroundColor:'#191CBC'
+        },
+        headerTintColor: '#fff',
+        headerTitleAlign:'center'
+    }
 });
 
 export default Tab2Stack;
