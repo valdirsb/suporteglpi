@@ -3,7 +3,7 @@ import { StatusBar } from 'react-native';
 import LoginStack from './LoginStack';
 import HomeTab from './HomeTab';
 
-StatusBar.setBackgroundColor('#07098C');
+StatusBar.setBackgroundColor('#0E2340');
 StatusBar.setBarStyle("light-content");
 
 const MainNavigator = createSwitchNavigator({

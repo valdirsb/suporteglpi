@@ -4,18 +4,20 @@ import LoginConfig from '../screes/LoginConfig';
 
 const MainNavigator = createStackNavigator({
     Login:{
-        screen:Login
+        screen:Login,
     },
     LoginConfig:{
         screen:LoginConfig
     }
 },{
+    headerMode:'none',
     defaultNavigationOptions:{
         headerStyle:{
             backgroundColor:'#191CBC'
         },
         headerTintColor: '#fff',
-        headerTitleAlign:'center'
+        headerTitleAlign:'center',
+        headerTitle: "Suporte FST"
     }
 });
 

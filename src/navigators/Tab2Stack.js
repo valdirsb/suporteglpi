@@ -1,17 +1,20 @@
 import { createStackNavigator } from 'react-navigation-stack';
-import Sobre from '../screes/Sobre';
+import { StatusBar } from 'react-native';
+import Info from '../screes/Info';
 import Config from '../screes/Config';
-import Outro from '../screes/Outro';
+import Sobre from '../screes/Sobre';
 
+StatusBar.setBackgroundColor('#0E2340');
 const Tab2Stack = createStackNavigator({
-    Sobre:{
-        screen:Sobre
+    Info:{
+        screen:Info,
+        
     },
     Config:{
         screen:Config
     },
-    Outro:{
-        screen:Outro
+    Sobre:{
+        screen:Sobre
     },
 }, {
     defaultNavigationOptions:{
@@ -19,7 +22,7 @@ const Tab2Stack = createStackNavigator({
             backgroundColor:'#191CBC'
         },
         headerTintColor: '#fff',
-        headerTitleAlign:'center'
+        headerTitleAlign:'center',
     }
 });
 

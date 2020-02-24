@@ -125,7 +125,8 @@ const Home = (props) => {
     } else {
 
         const filterNovo = props.navigation.getParam('novo', true);
-        const filterProcess = props.navigation.getParam('process', true); 
+        const filterProcess = props.navigation.getParam('process', true);
+        const filterProcessPlan = props.navigation.getParam('processPlan', true); 
         const filterPendente = props.navigation.getParam('pendente', true); 
         const filterResolvido = props.navigation.getParam('resolvido', false); 
         const filterFechado = props.navigation.getParam('fechado', false);
@@ -141,6 +142,7 @@ const Home = (props) => {
                             data={tickets.data.filter((item)=>{
                                 return  (((filterNovo)?item[12]===1:"")||
                                         ((filterProcess)?item[12]===2:"")||
+                                        ((filterProcessPlan)?item[12]===3:"")||
                                         ((filterPendente)?item[12]===4:"")||
                                         ((filterResolvido)?item[12]===5:"")||
                                         ((filterFechado)?item[12]===6:"")

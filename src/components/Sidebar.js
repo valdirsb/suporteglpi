@@ -31,6 +31,7 @@ export default class Sidebar extends Component {
       profileType:0,
       novo:true,
       process:true,
+      processPlan:true,
       pendente:true,
       resolvido:false,
       fechado:false,
@@ -137,9 +138,15 @@ export default class Sidebar extends Component {
             </ListItem>
             <ListItem>
               <Body>
-                <Text>Processamento</Text>
+                <Text>Processamento (Atribuído)</Text>
               </Body>
               <Switch value={this.state.process} onValueChange={(v)=>this.setState({process:v})} />
+            </ListItem>
+            <ListItem>
+              <Body>
+                <Text>Processamento (Planejado)</Text>
+              </Body>
+              <Switch value={this.state.processPlan} onValueChange={(v)=>this.setState({processPlan:v})} />
             </ListItem>
             <ListItem>
               <Body>
@@ -164,7 +171,8 @@ export default class Sidebar extends Component {
                     onPress={() => {this.props.navigation.navigate('Home', {
                                       entidade: this.state.entity,
                                       novo: this.state.novo, 
-                                      process:this.state.process, 
+                                      process:this.state.process,
+                                      processPlan:this.state.processPlan, 
                                       pendente:this.state.pendente, 
                                       resolvido:this.state.resolvido, 
                                       fechado:this.state.fechado

@@ -10,7 +10,6 @@ export default (props) => {
     const [ nome, setNome ] = useState('');
     const [ senha, setSenha ] = useState('');
     const [ loading, setLoading ] = useState(true);
-    AsyncStorage.setItem("@token", "");
 
     useEffect(()=>{
         loadToken();
