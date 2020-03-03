@@ -12,7 +12,7 @@ api.interceptors.request.use(async (config) => {
       if (token) {
         config.headers = {
             'Session-Token': token,
-            'Content-Type': 'application/json'
+            'Content-Type': 'multipart/form-data'
         };
       }
   
