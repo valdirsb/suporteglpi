@@ -4,6 +4,10 @@ import ImagePicker from 'react-native-image-picker';
 import api from '../services/api';
 import Axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNFetchBlob from 'react-native-fetch-blob';
+
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+window.Blob = RNFetchBlob.polyfill.Blob;
 
 const Config = () => {
     const [ avatar, setAvatar ] = useState();
@@ -87,6 +91,53 @@ const Config = () => {
     }
 
     async function uploadImage2() {
+
+        /*
+
+        let mime = 'image/jpeg';
+        const token = await AsyncStorage.getItem('@token');
+
+        RNFetchBlob.fs.readFile(avatar.uri,'base64')
+        .then((data)=>{
+            return RNFetchBlob.polyfill.Blob.build(data, {type:mime+';BASE69'});
+        })
+        .then((blob)=>{
+
+            fetch('POST', 'http://grupofst.com.br/hb7ti/apirest.php?Document',{
+                    'Session-Token': token,
+                    'Content-Type': 'multipart/form-data'
+                }, [
+                    { name: 'image', filename: 'avatar.jpg', data: blob},
+                    { uploadManifest: '{"name": "Uploaded document", "_filename" : "file.jpg"}}'}
+                ])
+                .then((resp)=>{
+                    console.log(resp);
+                    blob.close();
+                    alert("terminou");
+                })
+                .catch((error)=>{
+                    alert(error);
+                });
+            });
+
+            */
+
+
+        const token = await AsyncStorage.getItem('@token');
+
+        RNFetchBlob.fetch('POST', 'http://grupofst.com.br/hb7ti/apirest.php?Document',{
+            'Session-Token': token,
+            'Content-Type': 'multipart/form-data'
+        }, [
+            { name: 'image', filename: 'avatar.jpg', data: avatar.data},
+            { uploadManifest: '{"name": "Uploaded document", "_filename" : "file.jpg"}}'}
+        ]).then((resp)=>{
+            console.log(resp);
+        })
+
+       
+
+
     /*  const file = {
             'data-url': avatar.uri,
             'filename[]': avatar.fileName,
@@ -99,6 +150,8 @@ const Config = () => {
                 type: avatar.type
         }
         */
+
+       /*
         const formdata = new FormData();
    
         formdata.append('file', avatar.data , avatar.uri);
@@ -117,7 +170,7 @@ const Config = () => {
         } catch (err) {
                 alert(err.code);
               }
-        
+      */  
     }
 
 
