@@ -11,6 +11,7 @@ window.Blob = RNFetchBlob.polyfill.Blob;
 
 const Config = () => {
     const [ avatar, setAvatar ] = useState();
+    const [ foto, setFoto ] = useState();
 
     const imagePickerOpitions = {
         title: 'Escolha uma imagem',
@@ -92,37 +93,37 @@ const Config = () => {
 
     async function uploadImage2() {
 
-        /*
+        
 
         let mime = 'image/jpeg';
-        const token = await AsyncStorage.getItem('@token');
 
         RNFetchBlob.fs.readFile(avatar.uri,'base64')
         .then((data)=>{
-            return RNFetchBlob.polyfill.Blob.build(data, {type:mime+';BASE69'});
+            return RNFetchBlob.polyfill.Blob.build(data, {type:mime+';BASE64'});
         })
         .then((blob)=>{
+            setFoto(blob);
+            api.post('/Document/', {
+                uploadManifest:
+                {input:
+                    {
+                        "name": "Uploaded document", 
+                        "_filename" : "file.jpg"
+                    }},
+                file: blob
+                }).then(()=>{alert("ok-")});
+        })
+        .then(()=>{
+            console.log(foto);
+            alert("ok")
+        })
+        .catch((erro)=>{
+            alert(erro)
+        })
 
-            fetch('POST', 'http://grupofst.com.br/hb7ti/apirest.php?Document',{
-                    'Session-Token': token,
-                    'Content-Type': 'multipart/form-data'
-                }, [
-                    { name: 'image', filename: 'avatar.jpg', data: blob},
-                    { uploadManifest: '{"name": "Uploaded document", "_filename" : "file.jpg"}}'}
-                ])
-                .then((resp)=>{
-                    console.log(resp);
-                    blob.close();
-                    alert("terminou");
-                })
-                .catch((error)=>{
-                    alert(error);
-                });
-            });
+        
 
-            */
-
-
+        /*
         const token = await AsyncStorage.getItem('@token');
 
         RNFetchBlob.fetch('POST', 'http://grupofst.com.br/hb7ti/apirest.php?Document',{
@@ -134,7 +135,7 @@ const Config = () => {
         ]).then((resp)=>{
             console.log(resp);
         })
-
+        */
        
 
 

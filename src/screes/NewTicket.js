@@ -19,18 +19,23 @@ import {    Container,
 const NewTickets = (props) => {
     const [ loading, setLoading ] = useState(true);
     const [ entity, setEntity ] = useState(null);
+    const [ entityName, setEntityName ] = useState(null);
     const [ entitys, setEntitys ] = useState([]);
     const [ userR, setUserR ] = useState(null);
+    const [ userRname, setUserRname ] = useState(null);
     const [ usersR, setUsersR ] = useState([]);
     const [ userA, setUserA ] = useState(null);
+    const [ userAname, setUserAname ] = useState(null);
     const [ usersA, setUsersA ] = useState([]);
     const [ category, setCategory ] = useState(null);
+    const [ categoryName, setCategoryName ] = useState(null);
     const [ categorys, setCategorys ] = useState([]);
     const [ titulo, setTitulo ] = useState("");
     const [ descricao, setDescricao ] = useState("");
     const [ user, setUser ] = useState("");
     const [ profileType, setProfileType ] = useState(0);
     const [ servico, setServico ] = useState(2);
+    const [ servicoName, setServicoName ] = useState(null);
     const [ servicos, setServicos ] = useState( [
                                                     {name: 'Pedido', id: 2},
                                                     {name: 'Incidente', id: 1},
@@ -123,7 +128,8 @@ const NewTickets = (props) => {
             });
             alert(response.data.message);
             setLoading(false);
-            props.navigation.navigate('Home', {refresh: true});
+            props.navigation.navigate('Home');
+            loadRefresh();
             }
     };
 
@@ -183,14 +189,22 @@ const NewTickets = (props) => {
                                         <View style={styles.backEnt}>
                                             <ModalSelector
                                                 data={pickerEntity}
-                                                initValue="Selecionar  ▼"
+                                                supportedOrientations={['landscape']}
+                                                scrollViewAccessibilityLabel={'Scrollable options'}
                                                 optionContainerStyle={{backgroundColor: '#fff'}}
                                                 cancelContainerStyle={{backgroundColor: '#fff'}}
+                                                cancelText="Fechar"
                                                 sectionStyle={{backgroundColor: '#184782'}}
                                                 sectionTextStyle={{color:'#fff'}}
-                                                cancelText="Fechar"
-                                                onChange={(option)=>{setEntity(option.value)}} 
-                                            />
+                                                onChange={(option)=>{ setEntity(option.value), setEntityName(option.label) }}>
+
+                                                <TextInput
+                                                    style={styles.inputArea}
+                                                    editable={true}
+                                                    placeholder="Escolha uma Entidade   ▼"
+                                                    value={entityName} />
+
+                                            </ModalSelector>
                                         </View>
                                     </View>
                                     <View style={styles.row}>
@@ -199,14 +213,21 @@ const NewTickets = (props) => {
                                             <View style={styles.back}>
                                                 <ModalSelector
                                                     data={pickerusersR}
-                                                    initValue="Selecionar  ▼"
+                                                    supportedOrientations={['landscape']}
+                                                    scrollViewAccessibilityLabel={'Scrollable options'}
                                                     optionContainerStyle={{backgroundColor: '#fff'}}
                                                     cancelContainerStyle={{backgroundColor: '#fff'}}
                                                     sectionStyle={{backgroundColor: '#184782'}}
                                                     sectionTextStyle={{color:'#fff'}}
                                                     cancelText="Fechar"
-                                                    onChange={(option)=>{setUserR(option.value)}} 
-                                                />
+                                                    onChange={(option)=>{setUserR(option.value), setUserRname(option.label) }}>
+
+                                                    <TextInput
+                                                        style={styles.inputArea}
+                                                        editable={true}
+                                                        placeholder="Selecionar  ▼"
+                                                        value={userRname} />
+                                                </ModalSelector>
                                             </View>
                                             
                                         </View>
@@ -215,14 +236,22 @@ const NewTickets = (props) => {
                                             <View style={styles.back}>
                                                 <ModalSelector
                                                     data={pickerusersA}
-                                                    initValue="Selecionar  ▼"
+                                                    supportedOrientations={['landscape']}
+                                                    scrollViewAccessibilityLabel={'Scrollable options'}
                                                     optionContainerStyle={{backgroundColor: '#fff'}}
                                                     cancelContainerStyle={{backgroundColor: '#fff'}}
                                                     sectionStyle={{backgroundColor: '#184782'}}
                                                     sectionTextStyle={{color:'#fff'}}
                                                     cancelText="Fechar"
-                                                    onChange={(option)=>{setUserA(option.value)}} 
-                                                />
+                                                    onChange={(option)=>{setUserA(option.value), setUserAname(option.label)}}>
+
+                                                    <TextInput
+                                                        style={styles.inputArea}
+                                                        editable={true}
+                                                        placeholder="Selecionar  ▼"
+                                                        value={userAname} />
+
+                                                </ModalSelector>
                                             </View>
                                             
                                         </View>
@@ -238,14 +267,20 @@ const NewTickets = (props) => {
                                 <View style={styles.back}>
                                     <ModalSelector
                                         data={pickerServico}
-                                        initValue="Pedido "
+                                        supportedOrientations={['landscape']}
+                                        scrollViewAccessibilityLabel={'Scrollable options'}
                                         optionContainerStyle={{backgroundColor: '#fff'}}
                                         cancelContainerStyle={{backgroundColor: '#fff'}}
                                         sectionStyle={{backgroundColor: '#184782'}}
                                         sectionTextStyle={{color:'#fff'}}
                                         cancelText="Fechar"
-                                        onChange={(option)=>{setServico(option.value)}} 
-                                    />
+                                        onChange={(option)=>{setServico(option.value), setServicoName(option.label)}} >
+                                        <TextInput
+                                            style={styles.inputArea}
+                                            editable={true}
+                                            placeholder="Pedido"
+                                            value={servicoName} />
+                                    </ModalSelector>
                                 </View>
                                 
                             </View>
@@ -254,14 +289,21 @@ const NewTickets = (props) => {
                                 <View style={styles.back}>
                                     <ModalSelector
                                         data={pickerCategory}
-                                        initValue="Selecionar  ▼"
+                                        supportedOrientations={['landscape']}
+                                        scrollViewAccessibilityLabel={'Scrollable options'}
                                         optionContainerStyle={{backgroundColor: '#fff'}}
                                         cancelContainerStyle={{backgroundColor: '#fff'}}
                                         sectionStyle={{backgroundColor: '#184782'}}
                                         sectionTextStyle={{color:'#fff'}}
                                         cancelText="Fechar"
-                                        onChange={(option)=>{setCategory(option.value)}} 
-                                    />
+                                        onChange={(option)=>{setCategory(option.value), setCategoryName(option.label)}} >
+
+                                        <TextInput
+                                            style={styles.inputArea}
+                                            editable={true}
+                                            placeholder="Selecionar  ▼"
+                                            value={categoryName} />
+                                    </ModalSelector>
                                 </View>
                                 
                             </View>
@@ -269,6 +311,7 @@ const NewTickets = (props) => {
                         </View>
 
                         <View style={styles.column}>
+                            <Text>{entity}</Text>
                             
                             <Text style={styles.text}>Título do Chamado:</Text>
                             
@@ -353,6 +396,15 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 5,
         justifyContent: "center",
+    },
+    inputArea:{
+        fontSize: 16,
+        textAlign: "center",
+        borderWidth:1, 
+        borderColor:'#ccc', 
+        padding:10, 
+        height:40,
+        borderRadius: 5
     }
 
 
