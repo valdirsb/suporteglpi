@@ -1,5 +1,6 @@
+import FormData from 'form-data';
 import React, { useState, useEffect } from 'react';
-import {View, Text, Image, ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, Image, ScrollView, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import api from '../services/api';
 import Axios from 'axios';
@@ -10,7 +11,7 @@ window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = RNFetchBlob.polyfill.Blob;
 
 const Config = () => {
-    const [ avatar, setAvatar ] = useState();
+    const [ avatar, setAvatar ] = useState({});
     const [ foto, setFoto ] = useState();
 
     const imagePickerOpitions = {
@@ -93,7 +94,39 @@ const Config = () => {
 
     async function uploadImage2() {
 
+        const imagesData = new FormData();
+
         
+        imagesData.append('file', {
+            uri: avatar.uri,
+            name: avatar.fileName,
+            type: avatar.type
+         });
+
+        try{
+            await api.post(
+                        '/Document',
+                        {
+                            uploadManifest: {
+                                input:{
+                                    '_filename[]': avatar.fileName
+                                    },
+                                'upload_result': avatar.uri+avatar.fileName
+                                }
+                        },
+                    );
+                    console.log(imagesData);
+
+                    alert("ok");
+        } catch(err) {
+            console.log(imagesData);
+            alert(err);
+        }
+
+        
+
+
+        /* 
 
         let mime = 'image/jpeg';
 
@@ -120,7 +153,7 @@ const Config = () => {
         .catch((erro)=>{
             alert(erro)
         })
-
+        */
         
 
         /*
@@ -190,6 +223,9 @@ const Config = () => {
             <TouchableOpacity  style={styles.button} onPress={uploadImage2}>
                 <Text style={styles.buttonText}>Enviar Foto</Text>
             </TouchableOpacity>
+            <Text>{avatar.fileName}</Text>
+            <Text>{avatar.type}</Text>
+            <Text>{avatar.uri}</Text>
             
         </View>
     )
