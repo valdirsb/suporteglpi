@@ -7,8 +7,7 @@ import Axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNFetchBlob from 'react-native-fetch-blob';
 
-window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-window.Blob = RNFetchBlob.polyfill.Blob;
+
 
 const Config = () => {
     const [ avatar, setAvatar ] = useState({});
@@ -61,8 +60,8 @@ const Config = () => {
                     input:
                         {
                             "type": 1,
-                            "name": "Ticket Teste 2",
-                            "content": "content': 'Content do ticket Teste 2"
+                            "name": "Ticket fetch",
+                            "content": "Content do ticket Teste 2"
                         }
                 },
           redirect: 'follow'
@@ -94,6 +93,30 @@ const Config = () => {
 
     async function uploadImage2() {
 
+        var myHeaders = new Headers();
+        myHeaders.append("Session-Token", "vbf7p2ahqbqk0c9fgrkafukg67");
+        myHeaders.append("Content-Type", "multipart/form-data");
+        const arquivoName = avatar.fileName;
+        const arquivoUri = avatar.data
+
+
+        var formdata = new FormData();
+        formdata.append("uploadManifest", '{input:{"name": "Uploaded document", "_filename" : "file.txt"}}');
+        formdata.append("FILE", arquivoName, arquivoUri);
+
+        var raw = JSON.stringify({"input":[{"name":"Teste 2","content":"Texto content","itilcategories_id":52}]});
+
+        fetch('http://grupofst.com.br/hb7ti/apirest.php/Document', {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata
+        })
+        .then((response) => response.json())
+        .then((result) => console.log(result))
+        .catch(error => console.log('error', error));
+
+        /*
+
         const imagesData = new FormData();
 
         
@@ -122,6 +145,8 @@ const Config = () => {
             console.log(imagesData);
             alert(err);
         }
+
+        */
 
         
 
