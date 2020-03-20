@@ -96,7 +96,6 @@ const Config = () => {
 
     async function uploadImage2() {
 
-
         const token = await AsyncStorage.getItem('@token');
 
         console.log(foto);
