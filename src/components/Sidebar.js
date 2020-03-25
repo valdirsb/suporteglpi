@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import api from '../services/api';
-import { StyleSheet, StatusBar, Switch, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, StatusBar, Switch, View, TouchableOpacity, TextInput } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 
 import {
@@ -13,6 +13,7 @@ import {
   Form,
   Item, 
   Picker,
+  Icon,
   Radio,
   Body,
   Button,
@@ -36,13 +37,16 @@ export default class Sidebar extends Component {
       resolvido:false,
       fechado:false,
       radioBtnsData: ['Meus Chamados', 'Chamados Atribuidos', 'Todos os Chamados'],
-      radioChecked: 2
+      radioChecked: 2,
+      savedsearch: [],
+      savedsearchName: ""
     };
   }
 
   componentDidMount(){
     this.loadFullSession();
     this.loadEntitys();
+    this.loadSavedsearch();
   }
 
   loadFullSession = async () => {
@@ -61,6 +65,15 @@ export default class Sidebar extends Component {
       this.setState({ entitys });
   };
 
+  loadSavedsearch = async () => {
+
+    const response = await api.get('/savedsearch');
+    const savedsearch = response.data;
+
+    this.setState({ savedsearch });
+
+};
+
   ordenar(a, b) {
     return a.completename < b.completename ? -1 :a.completename > b.completename ? 1 : 0;
   };
@@ -70,8 +83,8 @@ export default class Sidebar extends Component {
 
       
 
-      const pickerEntity = this.state.entitys.map((v,k) => {
-          return {key: k, label: v.name, value: v.id, section: (v.level===1)?true:false }
+      const pickerSavedsearch = this.state.savedsearch.map((v,k) => {
+          return {key: k, label: v.name, value: v.query, section: false }
       });
 
         return (
@@ -94,6 +107,32 @@ export default class Sidebar extends Component {
               />
             </View>
       */}
+            
+            <View>
+              <ModalSelector
+                  data={pickerSavedsearch}
+                  supportedOrientations={['landscape']}
+                  scrollViewAccessibilityLabel={'Scrollable options'}
+                  optionContainerStyle={{backgroundColor: '#fff'}}
+                  cancelContainerStyle={{backgroundColor: '#fff'}}
+                  cancelText="Fechar"
+                  sectionStyle={{backgroundColor: '#184782'}}
+                  sectionTextStyle={{color:'#fff'}}
+                  onChange={(option)=>{ loadSavedsearch2(option.value), this.setState({ savedsearchName: option.label }), this.props.navigation.closeDrawer() }}>
+
+                <ListItem>
+                  <Left>
+                    <Text>Pesquisas Salvas</Text>
+                  </Left>
+                  <Right>
+                    <Icon type="FontAwesome" name="star" style={{ color: '#FFCE08'}} />
+                  </Right>
+                </ListItem>
+                
+              </ModalSelector>
+
+            </View>
+
             <Text style={styles.drawerTittle2}>Chamado:</Text>
             
             {this.state.radioBtnsData.map((data, key) => {

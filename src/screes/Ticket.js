@@ -40,8 +40,10 @@ const Ticket = (props) => {
         const ticketUser = response2.data;
         setTicketUser(ticketUser);
         
+        
         setLoading(false);
     };
+
 
     loadTicketUser = async () => {
         const id = props.navigation.getParam('id');
@@ -115,7 +117,8 @@ const Ticket = (props) => {
                         <View style={styles.cardColumn}>
                             <Text style={styles.h1}>{ticket.name}</Text>
                             <View style={styles.viewContent}>
-                                <HTML baseFontStyle={{ fontSize: 18, color: "#666"}} html={ticket.content} />
+                                <HTML decodeEntities={false} baseFontStyle={{ fontSize: 18, color: "#666"}} html={ticket.content} />
+                                
                             </View >
                             
                             

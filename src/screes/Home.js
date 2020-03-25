@@ -8,6 +8,7 @@ import {
     Container,
     Spinner,
     Text,
+    Button,
   } from "native-base";
 
 const Home = (props) => {
@@ -16,6 +17,7 @@ const Home = (props) => {
     const [ profileType, setProfileType ] = useState(0);
     const [ tickets, setTickets ] = useState([]);
     const [ filterParams, setFilterParams ] = useState({sort: 2, order: "DESC", range: "0-100"});
+    const [ filterSaved, setFilterSaved ] = useState(null);
     const [ loading, setLoading ] = useState(true);
 
     useEffect(()=>{
@@ -54,6 +56,13 @@ const Home = (props) => {
             default: 
                 alert("Caso nenhum");
             }
+    }
+
+    loadSavedsearch2 = async (query) => {
+
+        const resultado = JSON.parse('{"' + decodeURI(query).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+
+        setFilterParams(resultado);
     }
 
     loadFullSession = async () => {

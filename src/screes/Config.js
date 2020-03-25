@@ -101,11 +101,12 @@ const Config = () => {
         console.log(foto);
 
         var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "multipart/form-data");
         myHeaders.append("Session-Token", token);
+        myHeaders.append("Content-Type", "multipart/form-data");
+        myHeaders.append("Accept", "application/json");
         
         const arquivoName = avatar.fileName;
-        const arquivoUri = avatar
+        const arquivoUri = avatar.uri;
 
         var raw = JSON.stringify({
                     input:{name:"Teste 1234",content:"Texto content"}
@@ -118,7 +119,7 @@ const Config = () => {
 
         
 
-        fetch('http://grupofst.com.br/hb7ti/apirest.php/Ticket', {
+        fetch('http://grupofst.com.br/hb7ti/apirest.php/Document', {
             method: 'POST',
             headers: myHeaders,
             body: formdata,
