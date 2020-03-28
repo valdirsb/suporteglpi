@@ -45,7 +45,6 @@ export default class Sidebar extends Component {
 
   componentDidMount(){
     this.loadFullSession();
-    this.loadEntitys();
     this.loadSavedsearch();
   }
 

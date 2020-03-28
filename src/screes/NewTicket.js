@@ -311,7 +311,6 @@ const NewTickets = (props) => {
                         </View>
 
                         <View style={styles.column}>
-                            <Text>{entity}</Text>
                             
                             <Text style={styles.text}>Título do Chamado:</Text>
                             

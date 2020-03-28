@@ -61,7 +61,9 @@ const Home = (props) => {
     loadSavedsearch2 = async (query) => {
 
         const resultado = JSON.parse('{"' + decodeURI(query).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-
+        resultado.sort = 2;
+        resultado.order = "DESC";
+        resultado.range = "0-100";
         setFilterParams(resultado);
     }
 

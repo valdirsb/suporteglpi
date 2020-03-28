@@ -5,7 +5,6 @@ import ImagePicker from 'react-native-image-picker';
 import api from '../services/api';
 import Axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import RNFetchBlob from 'react-native-fetch-blob';
 
 /*
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;

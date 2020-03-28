@@ -22,7 +22,7 @@ const Info =  (props) => {
                 <Content>
                     <Image source={infoCover} style={styles.infoCover} />
 
-                    <Button block  style={styles.infoButton} onPress={() => {props.navigation.navigate('Config')}}>
+                    <Button block  style={styles.infoButton} onPress={() => {}}>
                         <View style={styles.infoView}>
                             <Icon name="book" type="Entypo" />
                             <Text>Instruções</Text>

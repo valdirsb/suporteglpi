@@ -1,11 +1,56 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
-import { Container, Icon, Content } from 'native-base';
+import { Container, Icon, Content, Accordion } from 'native-base';
 
 
 const logoImageApp = require("../assets/ic_launcher_round.png");
 
+const versionArray = [
+    { title: "Alteração 1", content: "Correções realizadas nos filtros." },
+    { title: "Alteração 2", content: "Correção na exibição das informações de usuários atribuidos e requerentes." },
+    { title: "Alteração 3", content: 'Criação da pagina "Sobre o App" com informações das notas da versão.' },
+    { title: "Alteração 3", content: "Alterações feita no layout do aplicativo" }
+  ];
+
+const dataArray = [
+    { title: "Versão 0.5", content: "text ..." , versionArray },
+  ];
+
+_renderHeader = (item, expanded) => {
+    return (
+        <View style={{
+        flexDirection: "row",
+        padding: 10,
+        justifyContent: "space-between",
+        alignItems: "center" ,
+        backgroundColor: "#b7daf8" }}>
+        <Text style={{ fontWeight: "600" }}>
+            {" "}{item.title}
+        </Text>
+        {expanded
+            ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
+            : <Icon style={{ fontSize: 18 }} name="add-circle" />}
+        </View>
+    );
+}
+_renderContent = (item) => {
+
+    const content = item.versionArray.map((v,k) => {
+        return (
+            <View style={styles.backContent}>
+                <Icon name="checkbox" type="Foundation" style={{color:"#BBB"}} />
+            <Text style={styles.textApp}>{v.content}</Text>
+            </View>
+            );
+    });
+    
+    return content
+}
+
+
 const Sobre = (props) => {
+
+            
     return(
         <Container style={styles.container}>
             <Content>
@@ -14,28 +59,25 @@ const Sobre = (props) => {
                 </View>
                 
                 <Text style={styles.textAppTitle}>SUPORTE FST</Text>
-                <Text style={styles.textAppVersion}>Versão 0.5</Text>
+                <Text style={styles.textAppVersion}>Versão 0.6</Text>
 
                 <View style={styles.containerAppNotes}>
                     
                     <Text style={styles.textAppNotes}>Notas da Versão:</Text>
+                    
+                    <View style={styles.textRow}>
+                        <Icon name="checkbox" type="Foundation" style={{color:"#BBB"}} />
+                        <Text style={styles.textApp}>Inclusão das pesquisas Salvas nos Filtros </Text>
+                    </View>
 
-                    <View style={styles.textRow}>
-                        <Icon name="checkbox" type="Foundation" style={{color:"#BBB"}} />
-                        <Text style={styles.textApp}>Correções realizadas nos filtros. </Text>
-                    </View>
-                    <View style={styles.textRow}>
-                        <Icon name="checkbox" type="Foundation" style={{color:"#BBB"}} />
-                        <Text style={styles.textApp}>Correção na exibição das informações de usuários atribuidos e requerentes. </Text>
-                    </View>
-                    <View style={styles.textRow}>
-                        <Icon name="checkbox" type="Foundation" style={{color:"#BBB"}} />
-                        <Text style={styles.textApp}>Criação da pagina "Sobre o App" com informações das notas da versão.</Text>
-                    </View>
-                    <View style={styles.textRow}>
-                        <Icon name="checkbox" type="Foundation" style={{color:"#BBB"}} />
-                        <Text style={styles.textApp}>Alterações feita no layout do aplicativo</Text>
-                    </View>
+                    <Text style={styles.textAppNotes}>Versões Anteriores:</Text>
+                    <Accordion
+                        dataArray={dataArray}
+                        animation={true}
+                        expanded={true}
+                        renderHeader={_renderHeader}
+                        renderContent={_renderContent}
+                    />
                     
                 </View>
             </Content>
@@ -102,5 +144,11 @@ const styles = StyleSheet.create({
     },
     textRow:{
         flexDirection:"row"
+    },
+    backContent:{
+        flexDirection:"row",
+        backgroundColor: "#E3EFFA",
+        paddingHorizontal: 10,
+        paddingVertical: 3
     }
 })
