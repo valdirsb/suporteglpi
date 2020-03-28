@@ -6,10 +6,14 @@ import api from '../services/api';
 import Axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
+<<<<<<< HEAD
 /*
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = RNFetchBlob.polyfill.Blob;
 */
+=======
+
+>>>>>>> 244f9b29cf84d8519097369fb55fd2faff0504bc
 
 const Config = () => {
     const [ avatar, setAvatar ] = useState({});
@@ -95,6 +99,7 @@ const Config = () => {
 
     async function uploadImage2() {
 
+<<<<<<< HEAD
         const token = await AsyncStorage.getItem('@token');
 
         console.log(foto);
@@ -117,12 +122,30 @@ const Config = () => {
         
 
         
+=======
+        var myHeaders = new Headers();
+        myHeaders.append("Session-Token", "vbf7p2ahqbqk0c9fgrkafukg67");
+        myHeaders.append("Content-Type", "multipart/form-data");
+        const arquivoName = avatar.fileName;
+        const arquivoUri = avatar.data
+
+
+        var formdata = new FormData();
+        formdata.append("uploadManifest", '{input:{"name": "Uploaded document", "_filename" : "file.txt"}}');
+        formdata.append("FILE", arquivoName, arquivoUri);
+
+        var raw = JSON.stringify({"input":[{"name":"Teste 2","content":"Texto content","itilcategories_id":52}]});
+>>>>>>> 244f9b29cf84d8519097369fb55fd2faff0504bc
 
         fetch('http://grupofst.com.br/hb7ti/apirest.php/Document', {
             method: 'POST',
             headers: myHeaders,
+<<<<<<< HEAD
             body: formdata,
             redirect: 'follow'
+=======
+            body: formdata
+>>>>>>> 244f9b29cf84d8519097369fb55fd2faff0504bc
         })
         .then((response) => response.json())
         .then((result) => console.log(result))
