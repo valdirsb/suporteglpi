@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
+import HTML from 'react-native-render-html';
+import moment from 'moment';
 import {StyleSheet, ScrollView, Dimensions, View, FlatList, Alert, TouchableHighlight, Modal, TextInput} from 'react-native';
 import { Contrast } from '../components/Componentes';
 import {
@@ -162,8 +164,8 @@ const TicketProcess =  (props) => {
     renderItem = ({ item }) => (
         <View style={styles.card}>
             <Text style={styles.h2}>{item.users_id}</Text>
-            <Text style={styles.text}>{item.content}</Text>
-            <Text>{item.date_creation}</Text>
+            <HTML baseFontStyle={{ fontSize: 18, color: "#666"}} html={item.content.replace(/&lt;/g, "<").replace(/&gt;/g, ">")} />
+            <Text>{moment(item.date_creation).format('DD/MM/YYYY - HH:mm:ss')}</Text>
         </View>
     )
 

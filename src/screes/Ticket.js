@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { Contrast } from '../components/Componentes';
 import HTML from 'react-native-render-html';
+import moment from 'moment';
 import { View, TouchableOpacity, StyleSheet, StatusBar, WebView } from 'react-native';
 import {
     Container,
@@ -30,6 +31,7 @@ const Ticket = (props) => {
             }
         });
         const ticket = response.data;
+        ticket.date = moment(ticket.date).format('DD/MM/YYYY - HH:mm:ss');
         setTicket(ticket);
 
         const response2 = await api.get(`/Ticket/${id}/Ticket_user`,{
@@ -117,7 +119,7 @@ const Ticket = (props) => {
                         <View style={styles.cardColumn}>
                             <Text style={styles.h1}>{ticket.name}</Text>
                             <View style={styles.viewContent}>
-                                <HTML decodeEntities={false} baseFontStyle={{ fontSize: 18, color: "#666"}} html={ticket.content} />
+                                <HTML baseFontStyle={{ fontSize: 18, color: "#666"}} html={ticket.content.replace(/&lt;/g, "<").replace(/&gt;/g, ">")} />
                                 
                             </View >
                             
