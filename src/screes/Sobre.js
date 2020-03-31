@@ -5,15 +5,31 @@ import { Container, Icon, Content, Accordion } from 'native-base';
 
 const logoImageApp = require("../assets/ic_launcher_round.png");
 
-const versionArray = [
-    { title: "Alteração 1", content: "Correções realizadas nos filtros." },
-    { title: "Alteração 2", content: "Correção na exibição das informações de usuários atribuidos e requerentes." },
-    { title: "Alteração 3", content: 'Criação da pagina "Sobre o App" com informações das notas da versão.' },
-    { title: "Alteração 3", content: "Alterações feita no layout do aplicativo" }
-  ];
+
+
+const funVersionArray = (v) => {
+    
+    if (v===5){
+        return [
+            { title: "Alteração 1", content: "Correções realizadas nos filtros." },
+            { title: "Alteração 2", content: "Correção na exibição das informações de usuários atribuidos e requerentes." },
+            { title: "Alteração 3", content: 'Criação da pagina "Sobre o App" com informações das notas da versão.' },
+            { title: "Alteração 4", content: "Alterações feita no layout do aplicativo" }
+          ];
+    } else {
+        if (v===6){
+            return [
+                { title: "Alteração 1", content: "Inclusão das pesquisas Salvas nos Filtros" }
+              ]
+        }
+    }
+  }
+
+  
 
 const dataArray = [
-    { title: "Versão 0.5", content: "text ..." , versionArray },
+    { title: "Versão 0.6", content: "text ..." , versao: 6 },
+    { title: "Versão 0.5", content: "text ..." , versao: 5 },
   ];
 
 _renderHeader = (item, expanded) => {
@@ -35,7 +51,7 @@ _renderHeader = (item, expanded) => {
 }
 _renderContent = (item) => {
 
-    const content = item.versionArray.map((v,k) => {
+    const content = funVersionArray(item.versao).map((v,k) => {
         return (
             <View style={styles.backContent}>
                 <Icon name="checkbox" type="Foundation" style={{color:"#BBB"}} />
@@ -59,7 +75,7 @@ const Sobre = (props) => {
                 </View>
                 
                 <Text style={styles.textAppTitle}>SUPORTE FST</Text>
-                <Text style={styles.textAppVersion}>Versão 0.6</Text>
+                <Text style={styles.textAppVersion}>Versão 0.7</Text>
 
                 <View style={styles.containerAppNotes}>
                     
@@ -67,7 +83,15 @@ const Sobre = (props) => {
                     
                     <View style={styles.textRow}>
                         <Icon name="checkbox" type="Foundation" style={{color:"#BBB"}} />
-                        <Text style={styles.textApp}>Inclusão das pesquisas Salvas nos Filtros </Text>
+                        <Text style={styles.textApp}>Correção de Bugs nas Pesquisas Salvas. </Text>
+                    </View>
+                    <View style={styles.textRow}>
+                        <Icon name="checkbox" type="Foundation" style={{color:"#BBB"}} />
+                        <Text style={styles.textApp}>Correção do formatos das Datas nas seções "detalhes do Chamado" e em "Processamento". </Text>
+                    </View>
+                    <View style={styles.textRow}>
+                        <Icon name="checkbox" type="Foundation" style={{color:"#BBB"}} />
+                        <Text style={styles.textApp}>Correção feita na Descrição dos chamados retirando as tags html. </Text>
                     </View>
 
                     <Text style={styles.textAppNotes}>Versões Anteriores:</Text>
